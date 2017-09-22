@@ -76,6 +76,20 @@ if (!global.L) {
             });
         });
     };
+
+    L.Map.prototype.toBuffer = function (callback) {
+        var leafletImage = require('leaflet-image');
+        var fs = require('fs');
+
+        leafletImage(this, function (err, canvas) {
+            if (err) {
+                console.error(err);
+                callback(err, null);
+                return;
+            }
+            callback(null, new Buffer(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64'));
+        });
+    };
 }
 
 module.exports = global.L;

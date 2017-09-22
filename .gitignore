@@ -1,2 +1,4 @@
+node_modules/
 test-*.png
 examples/leaflet-markercluster/sample-data.geojson
+examples/**/*.png
