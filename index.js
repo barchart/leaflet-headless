@@ -7,8 +7,13 @@
 var jsdom = require('jsdom').jsdom;
 var path = require('path');
 
-if (!global.L) {
+var reset = function () {
+
     // make some globals to fake browser behaviour.
+
+    if (global.window) {
+        global.window.close();
+    }
     global.document = jsdom('<html><head></head><body></body></html>', {
         features: {
             FetchExternalResources: ['img']
@@ -28,6 +33,14 @@ if (!global.L) {
 
     var scriptLength = leafletPath.split(path.sep).slice(-1)[0].length;
     L.Icon.Default.imagePath = 'file://' + leafletPath.substring(0, leafletPath.length - scriptLength) + 'images/';
+
+};
+
+if (!global.L) {
+
+    /* without redefining gobals, abd using leaft-image, it polutes the virual dom like no other */
+    /* so "reset it" */
+    reset();
 
     // Monkey patch Leaflet
     var originalInit = L.Map.prototype.initialize;
@@ -90,6 +103,8 @@ if (!global.L) {
             callback(null, new Buffer(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64'));
         });
     };
+
+    L.Map.prototype.reset = reset;
 }
 
 module.exports = global.L;
