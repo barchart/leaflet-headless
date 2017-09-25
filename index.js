@@ -92,7 +92,6 @@ if (!global.L) {
 
     L.Map.prototype.toBuffer = function (callback) {
         var leafletImage = require('leaflet-image');
-        var fs = require('fs');
 
         leafletImage(this, function (err, canvas) {
             if (err) {
@@ -100,8 +99,31 @@ if (!global.L) {
                 callback(err, null);
                 return;
             }
+
             callback(null, new Buffer(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64'));
         });
+    };
+
+    L.map.prototype.toCanvas = function (callback) {
+        var leafletImage = require('leaflet-image');
+
+        leafletImage(this, function (err, canvas) {
+            if (err) {
+                console.error(err);
+                callback(err, null);
+                return;
+            }
+
+            callback(null, canvas);
+        });
+    };
+
+    L.map.prototype.canvasToBuffer = function (canvas, callback) {
+        if (!canvas) {
+            callback('canvas cannot be null');
+        } else {
+            callback(null, new Buffer(canvas.toDataURL().replace(/^data:image\/\w+;base64,/, ''), 'base64'));
+        }
     };
 
     L.Map.prototype.reset = reset;
