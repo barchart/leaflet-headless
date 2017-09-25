@@ -38,7 +38,7 @@ var reset = function () {
 
 if (!global.L) {
 
-    /* without redefining gobals, abd using leaft-image, it polutes the virual dom like no other */
+    /* without redefining gobals, and using leaft-image, it pollutes the virual dom like no other */
     /* so "reset it" */
     reset();
 
@@ -104,7 +104,7 @@ if (!global.L) {
         });
     };
 
-    L.map.prototype.toCanvas = function (callback) {
+    L.Map.prototype.toCanvas = function (callback) {
         var leafletImage = require('leaflet-image');
 
         leafletImage(this, function (err, canvas) {
@@ -118,7 +118,7 @@ if (!global.L) {
         });
     };
 
-    L.map.prototype.canvasToBuffer = function (canvas, callback) {
+    L.Map.prototype.canvasToBuffer = function (canvas, callback) {
         if (!canvas) {
             callback('canvas cannot be null');
         } else {
